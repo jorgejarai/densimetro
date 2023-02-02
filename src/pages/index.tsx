@@ -34,7 +34,7 @@ export default function Home() {
           <div className="my-10 flex justify-center gap-4 items-center flex-wrap md:flex-nowrap">
             <h3 className="text-2xl select-none">El récord es de </h3>
             <Counter count={record} small />
-            <h2 className="text-2xl select-none">día{count !== 1 && "s"}.</h2>
+            <h2 className="text-2xl select-none">día{record !== 1 && "s"}.</h2>
           </div>
         </div>
       </main>
