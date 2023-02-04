@@ -1,11 +1,15 @@
-import Confetti from "@/components/Confetti";
-import Counter from "@/components/Counter";
+import type { InferGetServerSidePropsType } from "next";
 import Head from "next/head";
 
-export default function Home() {
-  const count: number = 1;
-  const record: number = 12;
+import Confetti from "@/components/Confetti";
+import Counter from "@/components/Counter";
 
+import getData from "@/lib/getData";
+
+export default function Home({
+  count,
+  record,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     <>
       <Head>
@@ -41,4 +45,14 @@ export default function Home() {
       <Confetti show={count === 0} />
     </>
   );
+}
+
+export async function getServerSideProps() {
+  const data = await getData();
+
+  return {
+    props: {
+      ...data,
+    },
+  };
 }
