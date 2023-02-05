@@ -3,21 +3,35 @@ import { differenceInDays } from "date-fns";
 import redis from "@/lib/redis";
 
 async function getData() {
-  const recordDate = await redis.get("record");
-  const lastDate = await redis.lrange("dates", -1, -1);
+  const dates = (await redis.lrange("dates", 0, -1)).map(
+    (date) => new Date(date)
+  );
 
-  const record = recordDate
-    ? differenceInDays(new Date(), new Date(recordDate))
-    : 0;
-
-  if (lastDate.length === 0) {
+  if (dates.length === 0) {
     return {
-      record,
+      record: 0,
       count: 0,
     };
   }
 
-  const count = differenceInDays(new Date(), new Date(lastDate[0]));
+  let record = 0;
+
+  if (dates.length === 1) {
+    record = differenceInDays(new Date(), dates[0]);
+  } else {
+    record = dates.reduce((record, date, index) => {
+      if (index === 0) {
+        return record;
+      }
+
+      const distance = differenceInDays(date, dates[index - 1]);
+
+      return Math.max(record, distance);
+    }, 0);
+  }
+
+  const lastDate = dates[dates.length - 1];
+  const count = differenceInDays(new Date(), lastDate);
 
   return {
     record,
