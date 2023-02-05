@@ -32,8 +32,7 @@ export default function Home({
             <h2 className="text-5xl select-none">día{count !== 1 && "s"}</h2>
           </div>
           <h2 className="text-4xl md:text-4xl text-center select-none">
-            desde el último robo de un{" "}
-            <span className="underline">densímetro nuclear</span>.
+            desde el último robo de un densímetro nuclear.
           </h2>
           <div className="my-10 flex justify-center gap-4 items-center flex-wrap md:flex-nowrap">
             <h3 className="text-2xl select-none">El récord es de </h3>
@@ -54,5 +53,6 @@ export async function getServerSideProps() {
     props: {
       ...data,
     },
+    revalidate: 3600,
   };
 }
