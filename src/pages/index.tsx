@@ -1,4 +1,4 @@
-import type { InferGetServerSidePropsType } from "next";
+import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Head from "next/head";
 
 import Confetti from "@/components/Confetti";
@@ -46,13 +46,20 @@ export default function Home({
   );
 }
 
-export async function getServerSideProps() {
+export const getServerSideProps: GetServerSideProps<{
+  count: number;
+  record: number;
+}> = async ({ res }) => {
+  res.setHeader(
+    "Cache-Control",
+    "public, s-max-age=1, stale-while-revalidate=59"
+  );
+
   const data = await getData();
 
   return {
     props: {
       ...data,
     },
-    revalidate: 3600,
   };
-}
+};
