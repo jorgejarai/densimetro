@@ -13,7 +13,15 @@ export default function Home({
   return (
     <>
       <Head>
-        <title>Create Next App</title>
+        <title>¿Ya se robaron otro denísmetro nuclear?</title>
+        <meta
+          property="og:title"
+          content="¿Ya se robaron otro densímetro nuclear?"
+        />
+        <meta
+          name="description"
+          content="¿Cuántos días han pasado desde el último robo de un densímetro nuclear en Chile?"
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -32,7 +40,7 @@ export default function Home({
             <h2 className="text-5xl select-none">día{count !== 1 && "s"}</h2>
           </div>
           <h2 className="text-4xl md:text-4xl text-center select-none">
-            desde el último robo de un densímetro nuclear.
+            desde el último robo de un densímetro nuclear en Chile.
           </h2>
           <div className="my-10 flex justify-center gap-4 items-center flex-wrap md:flex-nowrap">
             <h3 className="text-2xl select-none">El récord es de </h3>
