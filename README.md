@@ -1,38 +1,46 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# ¿Ya se robaron otro denísmetro nuclear?
 
-## Getting Started
+Esta es una pequeña *app* que lleva cuenta de cuántos días han pasado desde el último robo de un densímetro nuclear en Chile. La página está disponible actualmente en [densimetro.jorgejarai.xyz](https://densimetro.jorgejarai.xyz). Mi plan es eventualmente crear un *bot* de Twitter que publique a diario el número de días que han pasado desde el último robo, pero considerando la situación de Twitter no sé si voy a poder hacerlo.
 
-First, run the development server:
+El funcionamiento de la *app* es bastante simple, por lo que podría ser fácilmente replicada para otros propósitos si alguien lo desea.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+## ¿Cómo funciona?
+
+El *frontend* está basado en Next.js y Tailwind CSS, mientras que el *backend* utiiza Redis para almacenar el historial de fechas. La aplicación completa opera con TypeScript y cuenta con configuración para ser publicada con Docker.
+
+La página muestra el número de días desde el último robo y el récord actual desde que se comenzó a llevar la cuenta.
+
+## ¿Cómo puedo correr la aplicación?
+
+Para probar la aplicación localmente, se debe primero instalar las dependencias con `yarn` y luego correr el servidor de desarrollo con `yarn dev`. Para correr la aplicación en un contenedor de Docker, se debe primero construir la imagen con `docker build -t densimetro .` y luego correr el contenedor con `docker run -p 3000:3000 densimetro`, publicando la *app* en el puerto 3000. El proyecto también cuenta con un archivo `docker-compose.yml` para facilitar el despliegue de la *app* y la base de datos.
+
+La aplicación espera encontrar una URL a la base de datos Redis en `REDIS_URL`. Si no se provee, se utilizará `redis://localhost:6379` por defecto.
+
+## Poblando la base de datos
+
+Inicialmente, la base de datos no cuenta con ningún dato, por lo que es necesario poblarlo con fechas. Existen dos formas: acceder a la base de datos manualmente y agregando las fechas a la lista `densimetro:dates` o utilizar el *endpoint* `/api/update`), la cual espera una petición POST conteniendo un JSON con la fecha a añadir y una contraseña:
+
+```json
+{
+  "date": "2023-01-01",
+  "password": "..."
+}
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+La contraseña se provee a la aplicación mediante la variable de entorno `PASSWORD_HASH`, la cual debe ser un *hash* de la contraseña en formato bcrypt. Esta no es para nada la implementación más segura, pero es suficiente para evitar que cualquiera pueda modificar la base de datos.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+Una forma de generar el *hash* de una contraseña es utilizando la biblioteca `bcrypt` de Python:
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+```python
+import bcrypt
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+password = "..."
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+print(bcrypt.hashpw(password.encode(), bcrypt.gensalt()))
+```
 
-## Learn More
+Al momento de definir `PASSWORD_HASH` en algún archivo `.env`, es importante escapar los `$` para que no sean interpretados como variables de entorno. Así, un *hash* válido sería:
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```bash
+PASSWORD_HASH="\$2b\$12\$..."
+```
