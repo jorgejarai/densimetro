@@ -18,7 +18,7 @@ La aplicación espera encontrar una URL a la base de datos Redis en `REDIS_URL`.
 
 ## Poblando la base de datos
 
-Inicialmente, la base de datos no cuenta con ningún dato, por lo que es necesario poblarlo con fechas. Existen dos formas: acceder a la base de datos manualmente y agregando las fechas a la lista `densimetro:dates` o utilizar el *endpoint* `/api/update`), la cual espera una petición POST conteniendo un JSON con la fecha a añadir y una contraseña:
+Inicialmente, la base de datos no cuenta con ningún dato, por lo que es necesario poblarlo con fechas. Existen dos formas: acceder a la base de datos manualmente y agregando las fechas a la lista `densimetro:dates` (por defecto; se puede cambiar la llave modificando la variable de entorno `REDIS_DATES_KEY`) o utilizar el *endpoint* `/api/update`, la cual espera una petición POST conteniendo un JSON con la fecha a añadir y una contraseña:
 
 ```json
 {

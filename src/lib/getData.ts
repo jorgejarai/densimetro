@@ -1,9 +1,9 @@
 import { differenceInDays } from "date-fns";
 
-import redis from "@/lib/redis";
+import redis, { REDIS_DATES_KEY } from "@/lib/redis";
 
 async function getData() {
-  const dates = (await redis.lrange("dates", 0, -1)).map(
+  const dates = (await redis.lrange(REDIS_DATES_KEY, 0, -1)).map(
     (date) => new Date(date)
   );
 
