@@ -10,7 +10,7 @@ interface StatsProps {
 const Stats: FC<StatsProps> = ({ count, record }) => {
   return (
     <div className="w-screen md:m-2/3 flex flex-col items-center p-4">
-      <h1 className="text-5xl pt-6 md:pt-0 md:text-6xl font-bold mb-10 text-center">
+      <h1 className="text-5xl pt-6 md:pt-0 md:text-6xl font-bold mb-10 text-center select-none">
         {count === 0
           ? "¡Se robaron un densímetro!"
           : "¿Ya se robaron otro densímetro nuclear?"}
