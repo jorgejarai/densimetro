@@ -1,26 +1,29 @@
+import { differenceInDays } from "date-fns";
 import { FC } from "react";
 
 import Counter from "@/components/Counter";
 
 interface StatsProps {
-  count: number;
+  lastDate: Date;
   record: number;
 }
 
-const Stats: FC<StatsProps> = ({ count, record }) => {
+const Stats: FC<StatsProps> = ({ lastDate, record }) => {
+  const dayDifference = differenceInDays(new Date(), lastDate);
+ 
   return (
     <div className="w-screen md:m-2/3 flex flex-col items-center p-4">
       <h1 className="text-5xl pt-6 md:pt-0 md:text-6xl font-bold mb-10 text-center select-none">
-        {count === 0
+        {dayDifference === 0
           ? "¡Se robaron un densímetro!"
           : "¿Ya se robaron otro densímetro nuclear?"}
       </h1>
       <h2 className="text-3xl md:text-4xl text-center select-none">
-        Ha{count !== 1 && "n"} pasado
+        Ha{dayDifference !== 1 && "n"} pasado
       </h2>
       <div className="my-10 flex gap-4 items-center">
-        <Counter count={count} />
-        <h2 className="text-5xl select-none">día{count !== 1 && "s"}</h2>
+        <Counter count={dayDifference} />
+        <h2 className="text-5xl select-none">día{dayDifference !== 1 && "s"}</h2>
       </div>
       <h2 className="text-3xl md:text-4xl text-center select-none">
         desde el último robo de un densímetro nuclear en Chile.

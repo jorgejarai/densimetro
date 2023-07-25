@@ -9,34 +9,27 @@ async function getData() {
 
   if (dates.length === 0) {
     return {
-      record: 0,
-      count: 0,
+      lastDate: null,
+      record: null,
     };
   }
 
   let record = 0;
+  let lastDate = dates[dates.length - 1];
 
-  if (dates.length === 1) {
-    record = differenceInDays(new Date(), dates[0]);
-  } else {
-    record = dates.reduce((record, date, index) => {
-      if (index === 0) {
-        return record;
+  if (dates.length > 1) {
+    for (let i = 1; i < dates.length; i++) {
+      const difference = differenceInDays(dates[i], dates[i - 1]);
+      if (difference > record) {
+        record = difference;
+        lastDate = dates[i];
       }
-
-      const distance = differenceInDays(date, dates[index - 1]);
-
-      return Math.max(record, distance);
-    }, 0);
+    }
   }
 
-  const lastDate = dates[dates.length - 1];
-  const count = differenceInDays(new Date(), lastDate);
-
   return {
+    lastDate,
     record,
-    count,
   };
 }
-
 export default getData;
