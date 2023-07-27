@@ -17,8 +17,6 @@ export default async function handler(
   const password = req.body.password;
   const passwordHash = process.env.PASSWORD_HASH!;
 
-  console.log(process.env.PASSWORD_HASH);
-
   if (!password) {
     return res
       .status(400)
