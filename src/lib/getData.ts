@@ -22,7 +22,6 @@ async function getData() {
       const difference = differenceInDays(dates[i], dates[i - 1]);
       if (difference > record) {
         record = difference;
-        lastDate = dates[i];
       }
     }
   }
