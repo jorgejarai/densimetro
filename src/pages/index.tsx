@@ -36,10 +36,10 @@ export default function Home({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="bg-yellow-300 w-screen h-screen md:p-16 flex flex-col items-center">
+      <main className="bg-yellow-300 w-screen min-h-screen md:p-16 flex flex-col items-center">
         <Stats lastDate={lastDateDate} record={record ?? 0} />
         <Confetti show={isLastDateToday} />
-        <div className="mt-5">
+        <div className="my-5">
           <a
             href="https://github.com/jorgejarai/densimetro"
             className="text-4xl"
