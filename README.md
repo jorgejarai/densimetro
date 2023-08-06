@@ -8,7 +8,7 @@ El funcionamiento de la *app* es bastante simple, por lo que podría ser fácilm
 
 El *frontend* está basado en Next.js y Tailwind CSS, mientras que el *backend* utiiza Redis para almacenar el historial de fechas. La aplicación completa opera con TypeScript y cuenta con configuración para ser publicada con Docker.
 
-La página muestra el número de días desde el último robo y el récord actual desde que se comenzó a llevar la cuenta.
+La página muestra el número de días desde el último robo y el récord actual desde que se comenzó a llevar la cuenta. También muestra un historial con todos los robos registrados a la fecha.
 
 ## ¿Cómo puedo correr la aplicación?
 
@@ -18,11 +18,18 @@ La aplicación espera encontrar una URL a la base de datos Redis en `REDIS_URL`.
 
 ## Poblando la base de datos
 
-Inicialmente, la base de datos no cuenta con ningún dato, por lo que es necesario poblarlo con fechas. Existen dos formas: acceder a la base de datos manualmente y agregando las fechas a la lista `densimetro:dates` (por defecto; se puede cambiar la llave modificando la variable de entorno `REDIS_DATES_KEY`) o utilizar el *endpoint* `/api/update`, la cual espera una petición POST conteniendo un JSON con la fecha a añadir y una contraseña:
+Inicialmente, la base de datos no cuenta con ningún dato, por lo que es necesario poblarlo con fechas. Existen dos formas:
+
+- Acceder a la base de datos manualmente y agregar las fechas a la lista `densimetro:dates` (por defecto; se puede cambiar la llave modificando la variable de entorno `REDIS_DATES_KEY`)
+  - Cada elemento de la lista debe ser un *string* en formato `fecha,comuna,región,url`, donde `fecha` es la fecha del robo en formato `YYYY-MM-DD`, `comuna` y `región` son la comuna y región donde ocurrió el robo, respectivamente, y `url` es un enlace a una noticia sobre el robo como respaldo. ~Sé que hay mejores formas de hacer esto, pero quería hacer esto rápido; quizás algún día lo cambie.~
+- Utilizar el *endpoint* `/api/update`, la cual espera una petición POST conteniendo un JSON con la fecha, ubicación, URL de alguna noticia y una contraseña para autenticación:
 
 ```json
 {
   "date": "2023-01-01",
+  "commune": "Concepción",
+  "region": "Biobío",
+  "url": "https://radiomelipass.cl/2023/01/01/roban-densimetro-nuclear-en-concepcion/"
   "password": "..."
 }
 ```
