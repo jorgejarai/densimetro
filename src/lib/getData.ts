@@ -1,4 +1,4 @@
-import { differenceInDays } from "date-fns";
+import { differenceInCalendarDays } from "date-fns";
 
 import redis, { REDIS_DATES_KEY } from "@/lib/redis";
 
@@ -21,18 +21,18 @@ export async function getCurrentRecordData() {
     };
   }
 
-  let lastDate = dates[dates.length - 1];
   let longestStreak = 0;
-
   if (dates.length > 1) {
     for (let i = 1; i < dates.length; i++) {
-      const difference = differenceInDays(dates[i], dates[i - 1]);
+      const difference = differenceInCalendarDays(dates[i], dates[i - 1]);
 
       if (difference > longestStreak) {
         longestStreak = difference;
       }
     }
   }
+
+  let lastDate = dates[dates.length - 1];
 
   return {
     lastDate,

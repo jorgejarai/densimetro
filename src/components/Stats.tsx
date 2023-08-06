@@ -1,4 +1,4 @@
-import { differenceInDays } from "date-fns";
+import { differenceInCalendarDays } from "date-fns";
 import { FC } from "react";
 
 import Counter from "@/components/Counter";
@@ -9,7 +9,7 @@ interface StatsProps {
 }
 
 const Stats: FC<StatsProps> = ({ lastDate, longestStreak }) => {
-  const dayDifference = differenceInDays(new Date(), lastDate);
+  const dayDifference = differenceInCalendarDays(new Date(), lastDate);
 
   return (
     <div className="w-screen md:m-2/3 flex flex-col items-center p-4">
